@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { tasksRoutes } from './routes';
 
 const router = Router();
 
@@ -6,5 +7,7 @@ const router = Router();
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
+
+router.use('/api/v1/task', tasksRoutes);
 
 export default router;
