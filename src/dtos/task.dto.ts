@@ -11,3 +11,7 @@ export interface UpdateTaskDTO {
   status?: string;
   date?: Date;
 }
+export interface PaginationTaskDTO {
+  page: number;
+  size: number;
+}

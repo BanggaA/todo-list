@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import tasksController from '../../../controllers/tasks.controller';
+import tasksValidataion from '../../../validations/tasks.validataion';
 
 export const tasksRoutes = Router();
 
 tasksRoutes
-  .post('/', tasksController.createTask)
-  .get('/', tasksController.getTasks)
-  .get('/:taskId', tasksController.getById)
-  .patch('/:taskId', tasksController.updateTask)
-  .delete('/:taskId', tasksController.deleteTask);
+  .post('/', tasksValidataion.createTask, tasksController.createTask)
+  //.get('/', tasksController.getTasks)
+  .get('/:taskId', tasksValidataion.taskId, tasksController.getById)
+  .patch('/:taskId', tasksValidataion.updateTask, tasksController.updateTask)
+  .delete('/:taskId', tasksValidataion.taskId, tasksController.deleteTask);

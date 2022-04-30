@@ -12,10 +12,10 @@ export class TasksController {
     res.status(201).json(newTask);
   });
 
-  getTasks = expressAsyncHandler<any, any>(async (req, res) => {
-    const tasks = await this.taskServices.getTasks();
-    res.status(200).json(tasks);
-  });
+  // getTasks = expressAsyncHandler<any, any>(async (req, res) => {
+  //   const tasks = await this.taskServices.getTasks();
+  //   res.status(200).json(tasks);
+  // });
 
   getById = expressAsyncHandler<TaskControllerId>(async (req, res) => {
     const task = await this.taskServices.getById(parseInt(req.params.taskId));

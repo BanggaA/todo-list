@@ -1,7 +1,8 @@
 import { db } from '../models';
-import { CreateTaskDTO, UpdateTaskDTO } from '../dtos/task.dto';
-import { Request } from 'express';
+import { CreateTaskDTO, PaginationTaskDTO, UpdateTaskDTO } from '../dtos/task.dto';
+import { request, Request } from 'express';
 import createHttpError from 'http-errors';
+import { getPaginationLinks, getUrl } from '../utils/pagination.helper';
 
 export class TasksService {
   constructor(private database: typeof db) {}
@@ -12,10 +13,34 @@ export class TasksService {
     return newTask;
   }
 
-  async getTasks() {
-    const tasks = await this.database.Task.findAll({});
-    return tasks;
-  }
+  // async getTasks() {
+  //   const tasks = await this.database.Task.findAll({});
+  //   return tasks;
+  // }
+
+  // async getTasks(req,paginationTaskDTO: PaginationTaskDTO) {
+  //   const [page, size] = [Number(paginationTaskDTO.page), Number(paginationTaskDTO.size)];
+  //   const result = await this.database.Task.findAndCountAll({
+  //     limit : (page - 1) * size,
+  //     offset : size,
+  //   });
+  //   const total = result.length;
+  //   const lastPage = Math.ceil(count / size);
+
+  //   const url = getUrl(request);
+  //   url.searchParams.set('page', page as unknown as string);
+  //   url.searchParams.set('size', size as unknown as string);
+  //   const paginationUrl = `${url.pathname}${url.search}`;
+
+  //   return {
+  //     page,
+  //     size,
+  //     total,
+  //     count,
+  //     links: getPaginationLinks(paginationUrl, page, lastPage),
+  //     result,
+  //   };
+  // }
 
   async getById(taskId: number) {
     const task = await this.database.Task.findByPk(taskId);
