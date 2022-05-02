@@ -8,6 +8,6 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.use('/api/v1/task', tasksRoutes);
+router.use('/api/v1/tasks', tasksRoutes);
 
 export default router;

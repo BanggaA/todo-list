@@ -1,6 +1,6 @@
 import expressAsyncHandler from 'express-async-handler';
 import tasksService, { TasksService } from '../services/tasks.service';
-import { CreateTaskDTO, UpdateTaskDTO } from '../dtos/task.dto';
+import { CreateTaskDTO, PaginationTaskDTO, UpdateTaskDTO } from '../dtos/task.dto';
 
 type TaskControllerId = { taskId: string };
 
@@ -12,13 +12,13 @@ export class TasksController {
     res.status(201).json(newTask);
   });
 
-  // getTasks = expressAsyncHandler<any, any>(async (req, res) => {
-  //   const tasks = await this.taskServices.getTasks();
-  //   res.status(200).json(tasks);
-  // });
+  getTasks = expressAsyncHandler<any, any, PaginationTaskDTO>(async (req, res) => {
+    const tasks = await this.taskServices.getTasks(req.body);
+    res.status(200).json(tasks);
+  });
 
-  getById = expressAsyncHandler<TaskControllerId>(async (req, res) => {
-    const task = await this.taskServices.getById(parseInt(req.params.taskId));
+  getTaskById = expressAsyncHandler<TaskControllerId>(async (req, res) => {
+    const task = await this.taskServices.getTaskById(parseInt(req.params.taskId));
     res.status(200).json(task);
   });
 

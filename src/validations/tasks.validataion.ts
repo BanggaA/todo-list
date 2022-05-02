@@ -20,6 +20,11 @@ export class TasksValidation {
     body('date').isDate().optional(),
     validationMw,
   ];
+
+  PaginationTaskDTO = [
+    body('page').isNumeric({ no_symbols: true }),
+    body('size').isNumeric({ no_symbols: true }),
+  ];
 }
 
 export default new TasksValidation();

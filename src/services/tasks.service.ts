@@ -1,8 +1,6 @@
 import { db } from '../models';
 import { CreateTaskDTO, PaginationTaskDTO, UpdateTaskDTO } from '../dtos/task.dto';
-import { request, Request } from 'express';
 import createHttpError from 'http-errors';
-import { getPaginationLinks, getUrl } from '../utils/pagination.helper';
 
 export class TasksService {
   constructor(private database: typeof db) {}
@@ -18,31 +16,24 @@ export class TasksService {
   //   return tasks;
   // }
 
-  // async getTasks(req,paginationTaskDTO: PaginationTaskDTO) {
-  //   const [page, size] = [Number(paginationTaskDTO.page), Number(paginationTaskDTO.size)];
-  //   const result = await this.database.Task.findAndCountAll({
-  //     limit : (page - 1) * size,
-  //     offset : size,
-  //   });
-  //   const total = result.length;
-  //   const lastPage = Math.ceil(count / size);
+  async getTasks(paginationTaskDTO: PaginationTaskDTO) {
+    let [page, size] = [Number(paginationTaskDTO.page), Number(paginationTaskDTO.size)];
+    if (size <= 5) size = 5;
+    if (page <= 1) page = 1;
+    const tasks = await this.database.Task.findAndCountAll({
+      offset: (page - 1) * size,
+      limit: size,
+    });
+    const { rows: results, count } = tasks;
+    return {
+      page,
+      size,
+      count,
+      results,
+    };
+  }
 
-  //   const url = getUrl(request);
-  //   url.searchParams.set('page', page as unknown as string);
-  //   url.searchParams.set('size', size as unknown as string);
-  //   const paginationUrl = `${url.pathname}${url.search}`;
-
-  //   return {
-  //     page,
-  //     size,
-  //     total,
-  //     count,
-  //     links: getPaginationLinks(paginationUrl, page, lastPage),
-  //     result,
-  //   };
-  // }
-
-  async getById(taskId: number) {
+  async getTaskById(taskId: number) {
     const task = await this.database.Task.findByPk(taskId);
     if (!task) throw createHttpError(404, 'Task not found');
     return task;
